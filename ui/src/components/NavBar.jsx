@@ -19,11 +19,8 @@ import {
   ListItemText,
   Collapse,
 } from "@mui/material";
-import {
-  ArrowDropDownRounded,
-  ArrowRightRounded,
-} from "@mui/icons-material";
-import {useAuth} from "../redux/store/auth-context";
+import { ArrowDropDownRounded, ArrowRightRounded } from "@mui/icons-material";
+import { useAuth } from "../redux/store/auth-context";
 import Logo from "./Logo";
 import { makeStyles } from "@mui/styles";
 
@@ -34,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   button: {
-    textTransform:'capitalize !important',
-    color:'black !important',
+    textTransform: "capitalize !important",
+    color: "black !important",
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -72,7 +69,7 @@ const NavBar = () => {
     setOpenSecondLevel(!openSecondLevel);
   };
   const ctx = useAuth();
-const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
@@ -154,11 +151,15 @@ const handleOpenNavMenu = (event) => {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none"},
+                display: { xs: "block", md: "none" },
               }}
             >
-              <List component="nav" aria-labelledby="nested-list-subheader" >
-                <ListItem component={Button} onClick={handleClick} className={`${classes.button} `}>
+              <List component="nav" aria-labelledby="nested-list-subheader">
+                <ListItem
+                  component={Button}
+                  onClick={handleClick}
+                  className={`${classes.button} `}
+                >
                   <ListItemIcon className={classes.icon}>
                     {open ? (
                       <ArrowDropDownRounded
@@ -192,17 +193,19 @@ const handleOpenNavMenu = (event) => {
                   ))}
                 </Collapse>
                 {pages.map((page) => (
-                <ListItem key={page} component={Button} onClick={handleCloseNavMenu} className={`${classes.button} `}>
-                <ListItemIcon className={classes.icon}>
-                    <ArrowRightRounded
-                      fontSize="large"
-                    />
-                </ListItemIcon>
-                <ListItemText primary={page} />
-              </ListItem>
-              ))}
+                  <ListItem
+                    key={page}
+                    component={Button}
+                    onClick={handleCloseNavMenu}
+                    className={`${classes.button} `}
+                  >
+                    <ListItemIcon className={classes.icon}>
+                      <ArrowRightRounded fontSize="large" />
+                    </ListItemIcon>
+                    <ListItemText primary={page} />
+                  </ListItem>
+                ))}
               </List>
-              
             </Menu>
           </Box>
           <Box
@@ -241,7 +244,12 @@ const handleOpenNavMenu = (event) => {
               onClose={handleCloseCalendarMenu}
             >
               {Object.entries(calendarSettings).map(([k, v]) => (
-                <MenuItem key={k} component={Button} href={v} className={`${classes.button} `}>
+                <MenuItem
+                  key={k}
+                  component={Button}
+                  href={v}
+                  className={`${classes.button} `}
+                >
                   <Typography textAlign="center">{k}</Typography>
                 </MenuItem>
               ))}

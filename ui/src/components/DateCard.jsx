@@ -56,7 +56,7 @@ const DateCard = ({ savedDates, scrollRef }) => {
       direction="row"
       spacing={3}
     >
-      {savedDates.map((el,id) => {
+      {savedDates.map((el, id) => {
         return (
           <div
             key={id}

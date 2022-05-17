@@ -25,13 +25,21 @@ const AppWithRouteAccess = (props) => {
     },
     {
       path: "/add",
-      element: <RequireAuth isLoggedIn={ctx.isLoggedIn}><AddDate /></RequireAuth>,
+      element: (
+        <RequireAuth isLoggedIn={ctx.isLoggedIn}>
+          <AddDate />
+        </RequireAuth>
+      ),
       exact: true,
       navbar: true,
     },
     {
       path: "/list",
-      element: <RequireAuth isLoggedIn={ctx.isLoggedIn}><ListDate /></RequireAuth>,
+      element: (
+        <RequireAuth isLoggedIn={ctx.isLoggedIn}>
+          <ListDate />
+        </RequireAuth>
+      ),
       exact: true,
       navbar: true,
     },
@@ -46,20 +54,25 @@ const AppWithRouteAccess = (props) => {
       exact: true,
     },
   ];
-  return (<>
-    {ctx.isLoading?<Loader/>:<Routes>
-      <Route element={<LayoutWithoutNavbar />}>
-        {AppRoutes.map((route, i) => (
-          !route.navbar?<Route key={i} {...route} />:""
-        ))}
-      </Route>
-      <Route element={<LayoutwithNavbar />}>
-        {AppRoutes.map((route, i) => (
-          route.navbar?<Route key={i} {...route}/>:""
-        ))}
-      </Route>
-    </Routes>
-    }</>
+  return (
+    <>
+      {ctx.isLoading ? (
+        <Loader />
+      ) : (
+        <Routes>
+          <Route element={<LayoutWithoutNavbar />}>
+            {AppRoutes.map((route, i) =>
+              !route.navbar ? <Route key={i} {...route} /> : ""
+            )}
+          </Route>
+          <Route element={<LayoutwithNavbar />}>
+            {AppRoutes.map((route, i) =>
+              route.navbar ? <Route key={i} {...route} /> : ""
+            )}
+          </Route>
+        </Routes>
+      )}
+    </>
   );
 };
 

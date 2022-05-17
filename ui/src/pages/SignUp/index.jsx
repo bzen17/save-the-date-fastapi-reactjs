@@ -21,18 +21,18 @@ export default function SignUp() {
     event.preventDefault();
     const target = event.currentTarget;
     console.log({
-      fullname: target.firstName.value+" "+target.lastName.value,
+      fullname: target.firstName.value + " " + target.lastName.value,
       email: target.email.value,
       password: target.password.value,
     });
     const body = {
-      fullname: target.firstName.value+" "+target.lastName.value,
+      fullname: target.firstName.value + " " + target.lastName.value,
       email: target.email.value,
       password: target.password.value,
-    }
+    };
     signup(body).then((res) => {
       console.log(res);
-    })
+    });
   };
 
   return (

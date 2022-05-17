@@ -15,13 +15,21 @@ export const AppRoutes = [
   },
   {
     path: "/add",
-    element: <RequireAuth><AddDate /></RequireAuth>,
+    element: (
+      <RequireAuth>
+        <AddDate />
+      </RequireAuth>
+    ),
     exact: true,
     navbar: true,
   },
   {
     path: "/list",
-    element: <RequireAuth><ListDate /></RequireAuth>,
+    element: (
+      <RequireAuth>
+        <ListDate />
+      </RequireAuth>
+    ),
     exact: true,
     navbar: true,
   },

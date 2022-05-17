@@ -16,18 +16,20 @@ export const AuthContextProvider = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("tokenStore");
     if (token) {
-      getCurrentUser(JSON.parse(token)).then((res) => {
-        if (res.status === 200) {
-          setIsLoggedIn(true);
+      getCurrentUser(JSON.parse(token))
+        .then((res) => {
+          if (res.status === 200) {
+            setIsLoggedIn(true);
+            setIsLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoggedIn(false);
           setIsLoading(false);
-        }
-      }).catch((err) => {
-        console.log(err);
-        setIsLoggedIn(false);
-        setIsLoading(false);
-        localStorage.removeItem("tokenStore");
-      });
-    } else{
+          localStorage.removeItem("tokenStore");
+        });
+    } else {
       setIsLoading(false);
     }
   }, []);
@@ -60,6 +62,6 @@ export const AuthContextProvider = (props) => {
     </AuthContext.Provider>
   );
 };
-export const useAuth = () =>{
+export const useAuth = () => {
   return useContext(AuthContext);
 };

@@ -11,11 +11,14 @@ const LayoutwithNavbar = (props) => {
       className="d-flex flex-column "
       style={{ minHeight: "100vh", backgroundColor: "#EEC643" }}
     >
-      {isLoading?<Loader/>:
-      <>
-        <NavBar />
-        {props.children}
-      </>}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <NavBar />
+          {props.children}
+        </>
+      )}
       <Outlet />
     </div>
   );
