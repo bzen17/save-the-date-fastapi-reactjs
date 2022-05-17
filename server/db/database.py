@@ -1,8 +1,7 @@
-import motor.motor_asyncio
+from motor import motor_asyncio
+from config.importEnv import *
 
-MONGO_DETAILS = "mongodb://localhost:27017"
-
-client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
-database = client.bdayCalendar
+client = motor_asyncio.AsyncIOMotorClient(MONGO_DB_URL)
+database = client[MONGO_DB_NAME]
 users = database.get_collection("users")
 events = database.get_collection("events")

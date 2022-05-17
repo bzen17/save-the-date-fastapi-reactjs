@@ -1,0 +1,9 @@
+bcrypt
+cryptography
+email-validator
+fastapi
+motor
+passlib
+python-dotenv
+python-jose
+python-multipart

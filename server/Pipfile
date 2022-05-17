@@ -13,6 +13,7 @@ python-dotenv = "*"
 python-multipart = "*"
 pymongo = "*"
 motor = "*"
+pip-chill = "*"
 
 [dev-packages]
 

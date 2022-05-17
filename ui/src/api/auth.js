@@ -10,12 +10,12 @@ export const login = (data) => {
   const form = new FormData();
   form.append("username", data.username);
   form.append("password", data.password);
-  return axios.post(url, form);
+  return axios.post(url, form, HEADER);
 };
 
 export const signup = (data) => {
   const url = BASE_URL + "/auth/signup";
-  return axios.post(url, data);
+  return axios.post(url, data, HEADER);
 };
 
 export const getCurrentUser = () => {

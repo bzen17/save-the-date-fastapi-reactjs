@@ -10,9 +10,9 @@ class User(BaseModel):
 
 
 class UserInDB(User):
-    hashed_password: SecretStr
+    hashed_password: str
 
 class UserInBody(BaseModel):
     email: EmailStr
     fullname: str
-    password: SecretStr
+    password: str
