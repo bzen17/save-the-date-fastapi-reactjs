@@ -3,6 +3,7 @@
 ---
 
 **App URL** - [https://save-the-dates.netlify.app/](https://save-the-dates.netlify.app/)
+**Test User** - **`username`**`: test `**`password`**`: password@test`
 
 **Netlify** &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; **Swagger Docs**<br/>[![Netlify Status](https://api.netlify.com/api/v1/badges/8831cc0b-2d13-49ff-b940-eb26b5111473/deploy-status)](https://app.netlify.com/sites/save-the-dates/deploys)&emsp;&emsp;&emsp;&emsp;[![Swagger Docs](./ui/src/assets/images/swagger.png) ](https://9xo5x7.deta.dev/docs#/)
 
