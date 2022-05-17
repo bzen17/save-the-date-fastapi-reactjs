@@ -1,9 +1,9 @@
 import HEADER from "./header";
 import axios from "axios";
 const FormData = require("form-data");
-/* require('dotenv').config();
-const BASE_URL = process.env.REACT_APP_BASE_URL; */
-const BASE_URL = "http://127.0.0.1:8000";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
 
 export const login = (data) => {
   const url = BASE_URL + "/auth/login";
