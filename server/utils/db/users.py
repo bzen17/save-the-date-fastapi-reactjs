@@ -70,3 +70,13 @@ async def delete_user(id: str):
     if user:
         await users.delete_one({"_id": ObjectId(id)})
         return True
+
+async def generate_username(email: str, itr: int = 1) -> str:
+    username = email.split("@")[0]
+    user = await retrieve_user(username)
+    if (user):
+        if (email!=user["email"]):
+            return await generate_username(username+str(itr),itr+1)
+        else:
+            return False
+    return username

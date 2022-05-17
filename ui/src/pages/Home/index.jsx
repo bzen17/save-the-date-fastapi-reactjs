@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <div class="heroimage" style={{ backgroundImage: `url(${heroImg})` }}>
+      <div className="heroimage" style={{ backgroundImage: `url(${heroImg})` }}>
         <Container maxWidth="xl">
           <Box
             sx={{

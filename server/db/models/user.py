@@ -12,5 +12,7 @@ class User(BaseModel):
 class UserInDB(User):
     hashed_password: SecretStr
 
-class UserInBody(User):
+class UserInBody(BaseModel):
+    email: EmailStr
+    fullname: str
     password: SecretStr

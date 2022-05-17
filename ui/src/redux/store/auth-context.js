@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { login, getCurrentUser } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = React.createContext({
   isLoggedIn: false,
+  isLoading: true,
   onLogout: () => {},
   onLogin: async (username, password) => {},
 });
@@ -11,16 +12,23 @@ const AuthContext = React.createContext({
 export const AuthContextProvider = (props) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   useEffect(() => {
     const token = localStorage.getItem("tokenStore");
-    
     if (token) {
-      console.log('token')
       getCurrentUser(JSON.parse(token)).then((res) => {
         if (res.status === 200) {
           setIsLoggedIn(true);
+          setIsLoading(false);
         }
+      }).catch((err) => {
+        console.log(err);
+        setIsLoggedIn(false);
+        setIsLoading(false);
+        localStorage.removeItem("tokenStore");
       });
+    } else{
+      setIsLoading(false);
     }
   }, []);
   const logoutHandler = () => {
@@ -43,6 +51,7 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         isLoggedIn: isLoggedIn,
+        isLoading: isLoading,
         onLogout: logoutHandler,
         onLogin: loginHandler,
       }}
@@ -51,4 +60,6 @@ export const AuthContextProvider = (props) => {
     </AuthContext.Provider>
   );
 };
-export default AuthContext;
+export const useAuth = () =>{
+  return useContext(AuthContext);
+};

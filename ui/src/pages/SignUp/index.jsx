@@ -19,11 +19,20 @@ import Logo from "../../components/Logo";
 export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const target = event.currentTarget;
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      fullname: target.firstName.value+" "+target.lastName.value,
+      email: target.email.value,
+      password: target.password.value,
     });
+    const body = {
+      fullname: target.firstName.value+" "+target.lastName.value,
+      email: target.email.value,
+      password: target.password.value,
+    }
+    signup(body).then((res) => {
+      console.log(res);
+    })
   };
 
   return (

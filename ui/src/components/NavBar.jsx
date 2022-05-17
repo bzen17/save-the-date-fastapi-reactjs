@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,22 +12,85 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AuthContext from "../redux/store/auth-context";
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+} from "@mui/material";
+import {
+  ArrowDropDownRounded,
+  ArrowRightRounded,
+} from "@mui/icons-material";
+import {useAuth} from "../redux/store/auth-context";
 import Logo from "./Logo";
-const pages = ["Calendar", "Help"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+  button: {
+    textTransform:'capitalize !important',
+    color:'black !important',
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+  nestedSecondLevel: {
+    paddingLeft: theme.spacing(8),
+  },
+  icon: {
+    minWidth: "2.5rem !important",
+  },
+  nestedIcon: {
+    minWidth: "2.5rem !important",
+    marginLeft: "1rem !important",
+  },
+}));
+
+const pages = ["Help"];
+const settings = ["Profile", "Logout"];
+const calendarSettings = { "Add Date": "/add", "List Dates": "/list" };
 
 const NavBar = () => {
+  const classes = useStyles();
+  let navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const ctx = useContext(AuthContext);
-  const handleOpenNavMenu = (event) => {
+  const [anchorElCalendar, setAnchorElCalendar] = React.useState(null);
+  const [open, setOpen] = React.useState(true);
+  const [openSecondLevel, setOpenSecondLevel] = React.useState(true);
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  const handleClickSecondLevel = () => {
+    setOpenSecondLevel(!openSecondLevel);
+  };
+  const ctx = useAuth();
+const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
+  const handleOpenCalendarMenu = (event) => {
+    setAnchorElCalendar(event.currentTarget);
+  };
+  const handleCloseCalendarMenu = (e, setting, value = null) => {
+    switch (setting) {
+      case "Add Date":
+        navigate(value);
+        break;
+      default:
+        setAnchorElCalendar(null);
+        break;
+    }
+  };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
@@ -35,6 +99,9 @@ const NavBar = () => {
     switch (setting) {
       case "Logout":
         ctx.onLogout();
+        break;
+      case "Add":
+        navigate("add");
         break;
       default:
         setAnchorElUser(null);
@@ -87,16 +154,55 @@ const NavBar = () => {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: { xs: "block", md: "none"},
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" fontWeight="600 !important">
-                    {page}
-                  </Typography>
-                </MenuItem>
+              <List component="nav" aria-labelledby="nested-list-subheader" >
+                <ListItem component={Button} onClick={handleClick} className={`${classes.button} `}>
+                  <ListItemIcon className={classes.icon}>
+                    {open ? (
+                      <ArrowDropDownRounded
+                        fontSize="large"
+                        sx={{ color: "secondary.main" }}
+                      />
+                    ) : (
+                      <ArrowRightRounded
+                        fontSize="large"
+                        sx={{ color: "secondary.main" }}
+                      />
+                    )}
+                  </ListItemIcon>
+                  <ListItemText primary="Calendar" />
+                </ListItem>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                  {Object.entries(calendarSettings).map(([k, v]) => (
+                    <List key={k} component="div" disablePadding>
+                      <ListItem
+                        component={Button}
+                        href={v}
+                        className={`${classes.button} ${classes.nested}`}
+                        onClick={handleClickSecondLevel}
+                      >
+                        <ListItemIcon className={classes.nestedIcon}>
+                          <ArrowRightRounded fontSize="large" />
+                        </ListItemIcon>
+                        <ListItemText primary={k} />
+                      </ListItem>
+                    </List>
+                  ))}
+                </Collapse>
+                {pages.map((page) => (
+                <ListItem key={page} component={Button} onClick={handleCloseNavMenu} className={`${classes.button} `}>
+                <ListItemIcon className={classes.icon}>
+                    <ArrowRightRounded
+                      fontSize="large"
+                    />
+                </ListItemIcon>
+                <ListItemText primary={page} />
+              </ListItem>
               ))}
+              </List>
+              
             </Menu>
           </Box>
           <Box
@@ -106,6 +212,40 @@ const NavBar = () => {
               justifyContent: "flex-end",
             }}
           >
+            <Button
+              key="Calendar"
+              onClick={handleOpenCalendarMenu}
+              sx={{
+                my: 2,
+                color: "secondary.main",
+                display: "block",
+                fontWeight: "600 !important",
+              }}
+            >
+              Calendar
+            </Button>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElCalendar}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElCalendar)}
+              onClose={handleCloseCalendarMenu}
+            >
+              {Object.entries(calendarSettings).map(([k, v]) => (
+                <MenuItem key={k} component={Button} href={v} className={`${classes.button} `}>
+                  <Typography textAlign="center">{k}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
             {pages.map((page) => (
               <Button
                 key={page}

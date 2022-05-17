@@ -8,9 +8,7 @@ function App() {
   return (
     <Router>
       <AuthContextProvider>
-        <Layout>
-          <AppWithRouterAccess />
-        </Layout>
+        <AppWithRouterAccess />
       </AuthContextProvider>
     </Router>
   );

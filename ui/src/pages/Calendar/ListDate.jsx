@@ -16,27 +16,35 @@ import {
   Button,
 } from "@mui/material";
 import DateCard from "../../components/DateCard";
-import { getCurrentMonthUserEvents, getUpcomingUserEvents } from "../../api/event";
+import {
+  getCurrentMonthUserEvents,
+  getUpcomingUserEvents,
+} from "../../api/event";
 import { getCurrMonth } from "../../utils/getDateAttr";
 import { useHorizontalScroll } from "../../utils/useHorizontalScroll";
 const ListDate = () => {
-    const scrollRef1 = useHorizontalScroll();
-    const scrollRef2 = useHorizontalScroll();
-    const [currentDates, setCurrentDates] = useState([]);
-    const [upcomingDates, setUpcomingDates] = useState([]);
+  const scrollRef1 = useHorizontalScroll();
+  const scrollRef2 = useHorizontalScroll();
+  const [currentDates, setCurrentDates] = useState([]);
+  const [upcomingDates, setUpcomingDates] = useState([]);
   useEffect(() => {
-      const fetchData = async () => {
-        const current = await getCurrentMonthUserEvents(new Date().getDate(),getCurrMonth()).catch(err => {
-            console.log(err);
-        });
-        const upcoming = await getUpcomingUserEvents(getCurrMonth(),3).catch(err => {
-          console.log(err);
+    const fetchData = async () => {
+      const current = await getCurrentMonthUserEvents(
+        new Date().getDate(),
+        getCurrMonth()
+      ).catch((err) => {
+        console.log(err);
       });
+      const upcoming = await getUpcomingUserEvents(getCurrMonth(), 3).catch(
+        (err) => {
+          console.log(err);
+        }
+      );
       setCurrentDates(current.data.data);
       setUpcomingDates(upcoming.data.data);
-      }
-      fetchData();
-  },[]);
+    };
+    fetchData();
+  }, []);
   return (
     <React.Fragment>
       <CssBaseline />
@@ -56,14 +64,14 @@ const ListDate = () => {
           <Typography variant="h3" sx={{ color: "secondary.dark" }}>
             Current Month
           </Typography>
-          <Divider sx={{ mb: 3}} />
-            <DateCard savedDates={currentDates} scrollRef={scrollRef1}/>
+          <Divider sx={{ mb: 3 }} />
+          <DateCard savedDates={currentDates} scrollRef={scrollRef1} />
           <Divider sx={{ mt: 3 }} />
           <Typography variant="h3" sx={{ color: "secondary.dark" }}>
             Upcoming Months
           </Typography>
           <Divider sx={{ mb: 3 }} />
-          <DateCard savedDates={upcomingDates} scrollRef={scrollRef2}/>
+          <DateCard savedDates={upcomingDates} scrollRef={scrollRef2} />
         </Box>
       </Container>
     </React.Fragment>

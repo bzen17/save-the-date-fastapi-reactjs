@@ -27,6 +27,14 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 @router.post("/signup")
 async def signup(user: UserInBody = Body(...)):
     user = jsonable_encoder(user)
+    username = await generate_username(user["email"])
+    if not username:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User already exists",
+        )
+    user["username"] = username
+    user["is_active"] = True
     user = await add_user(user)
     if not user:
         raise HTTPException(

@@ -12,11 +12,11 @@ export const getAllUserEvents = () => {
   return axios.get(url, HEADER);
 };
 
-export const getCurrentMonthUserEvents = (day,month) => {
+export const getCurrentMonthUserEvents = (day, month) => {
   const url = BASE_URL + `/event?day=${day}&month=${month}`;
   return axios.get(url, HEADER);
 };
-export const getUpcomingUserEvents = (month,upcoming) => {
+export const getUpcomingUserEvents = (month, upcoming) => {
   const url = BASE_URL + `/event?month=${month}&upcoming=${upcoming}`;
   return axios.get(url, HEADER);
 };

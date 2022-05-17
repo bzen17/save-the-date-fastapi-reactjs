@@ -18,7 +18,6 @@ import { getCurrentUser } from "../../api/auth";
 import { addEvent } from "../../api/event";
 import { useHorizontalScroll } from "../../utils/useHorizontalScroll";
 
-
 const AddDate = () => {
   const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState({ Day: "", Month: "" });
@@ -63,9 +62,7 @@ const AddDate = () => {
   const scrollRef2 = useHorizontalScroll();
   const scrollRef3 = useHorizontalScroll();
   const scrollRef4 = useHorizontalScroll();
-  const handleDateClick = (e, i) => {
-    console.log(e, i);
-  };
+
   const handleDayClick = (e, i) => {
     setSelectedDate((prevState) => {
       return { ...prevState, Day: i };

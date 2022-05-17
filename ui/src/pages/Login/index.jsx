@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
-import AuthContext from "../../redux/store/auth-context";
+import { useAuth } from "../../redux/store/auth-context";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -25,17 +25,15 @@ const Login = () => {
     value: "",
     isValid: null,
   });
-  const authCtx = useContext(AuthContext);
+  const authCtx = useAuth();
   const { isValid: usernameIsValid } = usernameState;
   const { isValid: passwordIsValid } = passwordState;
   useEffect(() => {
     const identifier = setTimeout(() => {
-      console.log("Checking form validity!");
       setFormIsValid(usernameIsValid && passwordIsValid);
     }, 500);
 
     return () => {
-      console.log("CLEANUP");
       clearTimeout(identifier);
     };
   }, [usernameIsValid, passwordIsValid]);

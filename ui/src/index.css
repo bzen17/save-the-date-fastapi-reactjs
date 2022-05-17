@@ -78,3 +78,17 @@ code {
 .scrollableContainer::-webkit-scrollbar {
   display: none;
 }
+
+.loader-overlay {
+  height: calc(100vh + 0.75rem);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+}
