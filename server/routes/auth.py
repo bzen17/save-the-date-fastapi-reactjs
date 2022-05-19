@@ -6,7 +6,7 @@ from utils.db.users import *
 from db.models import *
 from config.importEnv import *
 from fastapi.security import OAuth2PasswordRequestForm
-
+import json
 router = APIRouter()
 
 @router.post("/login", response_model=Token)
@@ -20,7 +20,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["username"]}, expires_delta=access_token_expires
+        data={"sub": json.dumps({"un":user["username"],"fn":user["fullname"],"email":user["email"]})}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "Bearer"}
 
