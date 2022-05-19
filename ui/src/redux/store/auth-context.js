@@ -1,18 +1,20 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect,useMemo } from "react";
 import { login, getCurrentUser } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
-
+import jwt_decode from "jwt-decode";
 const AuthContext = React.createContext({
   isLoggedIn: false,
   isLoading: true,
   onLogout: () => {},
-  onLogin: async (username, password) => {},
+  onLogin: async (username, password, loader) => {},
+  user: {}
 });
 
 export const AuthContextProvider = (props) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [user, setUser] = React.useState({});
   useEffect(() => {
     const token = localStorage.getItem("tokenStore");
     if (token) {
@@ -21,6 +23,8 @@ export const AuthContextProvider = (props) => {
           if (res.status === 200) {
             setIsLoggedIn(true);
             setIsLoading(false);
+            console.log(res.data);
+            setUser(res.data);
           }
         })
         .catch((err) => {
@@ -37,8 +41,11 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem("tokenStore");
     setIsLoggedIn(false);
   };
-  const loginHandler = async (username, password) => {
-    const token = await login({ username, password });
+  const loginHandler = async (username, password,loader) => {
+    const token = await login({ username, password }).catch((err) => {
+      console.log(err);
+      loader.setIsLoading(false);
+    });
     localStorage.setItem(
       "tokenStore",
       JSON.stringify({
@@ -46,7 +53,9 @@ export const AuthContextProvider = (props) => {
         created_at: Date.now(),
       })
     );
+    
     setIsLoggedIn(true);
+    loader.setIsLoading(false);
     navigate("/");
   };
   return (
@@ -56,6 +65,7 @@ export const AuthContextProvider = (props) => {
         isLoading: isLoading,
         onLogout: logoutHandler,
         onLogin: loginHandler,
+        user: user,
       }}
     >
       {props.children}

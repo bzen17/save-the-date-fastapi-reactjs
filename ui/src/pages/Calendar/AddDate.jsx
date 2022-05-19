@@ -17,9 +17,12 @@ import styled from "styled-components";
 import { getCurrentUser } from "../../api/auth";
 import { addEvent } from "../../api/event";
 import { useHorizontalScroll } from "../../utils/useHorizontalScroll";
+import { useLoader } from "../../redux/store/loader-context";
+import Loader from "../../components/Loader";
 
 const AddDate = () => {
   const classes = useStyles();
+  const loader = useLoader();
   const [selectedDate, setSelectedDate] = useState({ Day: "", Month: "" });
   const [selectedOccasion, setSelectedOccasion] = useState({
     Name: "",
@@ -116,16 +119,26 @@ const AddDate = () => {
     };
     return data;
   };
+  useEffect(() => {
+    loader.setIsLoading(false);
+  },[]);
   const handleSubmitForm = async () => {
+    loader.setIsLoading(true);
     if (ValidateForm()) {
       const formData = await FormData();
-      await addEvent(formData);
+      
+      const res = await addEvent(formData).catch((err) => {
+
+        loader.setIsLoading(false);
+      });
+      loader.setIsLoading(false);
     }
+    loader.setIsLoading(false);
   };
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="false" sx={{ bgcolor: "primary.main" }}>
+      {loader.isLoading?<Loader/>:<Container maxWidth="false" sx={{ bgcolor: "primary.main" }}>
         <Container maxWidth="xl">
           <Box sx={{ bgcolor: "transparent" }}>
             <Typography
@@ -133,7 +146,6 @@ const AddDate = () => {
               sx={{
                 color: "secondary.main",
                 textAlign: "center",
-                marginTop: "5rem",
               }}
             >
               Add a Date
@@ -358,7 +370,7 @@ const AddDate = () => {
             </Button>
           </Box>
         </Container>
-      </Container>
+      </Container>}
     </React.Fragment>
   );
 };

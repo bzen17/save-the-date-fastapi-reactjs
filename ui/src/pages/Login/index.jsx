@@ -15,6 +15,11 @@ import Copyright from "../../components/Copyright";
 import formReducer from "../../redux/reducers/formReducer";
 import Logo from "../../components/Logo";
 import { Typography } from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
+import LoginImg from "../../assets/images/login.jpg";
+import { useLoader } from "../../redux/store/loader-context";
+import ReactLoading from "react-loading";
+
 const Login = () => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [usernameState, dispatchUsername] = useReducer(formReducer, {
@@ -26,8 +31,12 @@ const Login = () => {
     isValid: null,
   });
   const authCtx = useAuth();
+  const loader = useLoader();
   const { isValid: usernameIsValid } = usernameState;
   const { isValid: passwordIsValid } = passwordState;
+  useEffect(() => {
+    loader.setIsLoading(false);
+  },[]);
   useEffect(() => {
     const identifier = setTimeout(() => {
       setFormIsValid(usernameIsValid && passwordIsValid);
@@ -38,14 +47,11 @@ const Login = () => {
     };
   }, [usernameIsValid, passwordIsValid]);
   const onLoginSubmit = async (event) => {
+    loader.setIsLoading(true);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const loginData = {
-      username: data.get("username"),
-      password: data.get("password"),
-    };
     //const token = await login(loginData)
-    authCtx.onLogin(usernameState.value, passwordState.value);
+    authCtx.onLogin(usernameState.value, passwordState.value, loader);
   };
 
   const usernameChangeHandler = (event) => {
@@ -62,9 +68,9 @@ const Login = () => {
         item
         xs={false}
         sm={4}
-        md={7}
+        md={6}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random)",
+          backgroundImage: `url(${LoginImg})`,
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -73,16 +79,12 @@ const Login = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      >
-        <div className="d-flex align-items-center">
-          <Logo padding="1rem" />
-        </div>
-      </Grid>
+      ></Grid>
       <Grid
         item
         xs={12}
         sm={8}
-        md={5}
+        md={6}
         component={Paper}
         elevation={6}
         square
@@ -98,7 +100,15 @@ const Login = () => {
             alignItems: "center",
           }}
         >
-          <Box component="form" noValidate onSubmit={onLoginSubmit}>
+          <div className="d-flex align-items-center">
+            <Logo padding="1rem" />
+          </div>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={onLoginSubmit}
+            sx={{ mt: 8 }}
+          >
             <TextField
               margin="normal"
               required
@@ -129,15 +139,18 @@ const Login = () => {
               control={<Checkbox value="remember" color="secondary" />}
               label="Remember me"
             />
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, fontSize: "1.5rem", letterSpacing: "0.5rem", borderRadius: "3rem" }}
               color="secondary"
+              loading={loader.isLoading}
+              loadingIndicator={<ReactLoading type="balls" height={32} width={32}/>}
+
             >
               LOGIN
-            </Button>
+            </LoadingButton>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2" color="secondary">

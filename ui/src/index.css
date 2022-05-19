@@ -81,7 +81,8 @@ code {
 
 .loader-overlay {
   height: calc(100vh + 0.75rem);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(238, 198, 67, 1);
+  z-index: 9999;
 }
 
 .loader {
@@ -91,4 +92,11 @@ code {
   transform: translate(-50%, -50%);
   z-index: 9999;
 
+}
+
+.layoutWrapper {
+  height: 100vh;
+  /* Use vh as a fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
+  background-size: cover
 }

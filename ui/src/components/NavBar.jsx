@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Avatar from 'react-avatar';
 import {
   List,
   ListItem,
@@ -23,6 +23,7 @@ import { ArrowDropDownRounded, ArrowRightRounded } from "@mui/icons-material";
 import { useAuth } from "../redux/store/auth-context";
 import Logo from "./Logo";
 import { makeStyles } from "@mui/styles";
+import jwt_decode from "jwt-decode";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +55,8 @@ const settings = ["Profile", "Logout"];
 const calendarSettings = { "Add Date": "/add", "List Dates": "/list" };
 
 const NavBar = () => {
+  const user = useMemo(() => localStorage.getItem('tokenStore')?JSON.parse(jwt_decode(localStorage.getItem('tokenStore')).sub):"", []);
+
   const classes = useStyles();
   let navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -113,12 +116,11 @@ const NavBar = () => {
         backgroundColor: "transparent",
         zIndex: 999,
         boxShadow: "none",
-        marginBottom: "-5rem",
       }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Logo scale="0.75" />
+          <Logo scale="0.75" navbar={true}/>
           <Box
             sx={{
               flexGrow: 1,
@@ -274,7 +276,9 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar 
+                  color='#0D21A1'
+                  name={user.fn}  size={40} round="20px"/>
                 </IconButton>
               </Tooltip>
               <Menu

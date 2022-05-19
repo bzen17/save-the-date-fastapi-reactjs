@@ -8,88 +8,105 @@ import Box from "@mui/material/Box";
 import ListItem from "../../components/ListItem";
 import Button from "@mui/material/Button";
 import ArrowCircleRightTwoToneIcon from "@mui/icons-material/ArrowCircleRightTwoTone";
+import { useMediaQuery } from "react-responsive";
 
 const Home = () => {
+  const isPortrait = useMediaQuery({ query: "(max-width: 768px)" });
   return (
     <React.Fragment>
       <CssBaseline />
-      <div className="heroimage" style={{ backgroundImage: `url(${heroImg})` }}>
-        <Container maxWidth="xl">
+      <Container maxWidth="xl" disableGutters={isPortrait} sx={{ bgcolor: "primary.main" }}>
+        <Box
+          sx={{
+            bgcolor: "transparent",
+            float: "right",
+          }}
+        >
           <Box
             sx={{
-              bgcolor: "transparent",
-              height: "100vh",
-              float: "right",
-              pt: 20,
+              p: isPortrait ? 2 : 3,
+              maxWidth: isPortrait ? "100%" : "85%",
+              float: "left",
+              borderRadius: "1rem",
+              border: "5px solid #0D21A1",
             }}
           >
-            <Typography
+            <Box
               sx={{
-                fontSize: "3rem",
-                color: "secondary.main",
-                fontWeight: "600",
-                textAlign: "right",
-                letterSpacing: "0.3rem",
+                p: isPortrait ? 2.5 : 5,
+                pb: 6.5,
+                maxWidth: "100%",
+                borderRadius: "1rem",
+                border: "5px solid #fff",
               }}
             >
-              My Big Dates
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "2rem",
-                color: "light",
-                fontWeight: "600",
-                textAlign: "right",
-                mb: 3,
-                marginLeft: "7rem",
-                textShadow: `-1px 1px 0 #0D21A1,1px 1px 0 #0D21A1,1px -1px 0 #0D21A1,-1px -1px 0 #0D21A1`,
-              }}
-            >
-              Never forget the big days of your friends, <br />
-              colleagues, employees or loved ones.
-            </Typography>
-            <ListItem
-              content="Save your favorite dates."
-              tooltip="Birthday, Anniversary, etc. save any date that matters."
-            />
-            <ListItem
-              content="Get notified ahead of time."
-              tooltip="Recieve email/SMS/WhatsApp message prior to the big dates."
-            />
-            <ListItem
-              content="Send out wishes to your loved ones."
-              tooltip="Send email/SMS/WhatsApp notification to the significant people."
-            />
-            <ListItem
-              content="Automate personalized wishes."
-              tooltip="Send automated custom messages."
-            />
-            <Button
-              key="login"
-              href="/help"
-              sx={{
-                my: 2,
-                mt: 3,
-                color: "secondary.main",
-                float: "right",
-                textAlign: "center",
-                backgroundColor: "primary.main",
-                fontWeight: "600",
-                fontSize: "1.5rem",
-                padding: "0.5rem 2rem",
-                borderRadius: "3rem",
-                "&:hover": {
-                  backgroundColor: "secondary.dark",
-                  color: "primary.main",
-                },
-              }}
-            >
-              Learn More
-              <ArrowCircleRightTwoToneIcon sx={{ ml: 1, fontSize: "2rem" }} />
-            </Button>
+              <Typography
+                sx={{
+                  fontSize: isPortrait ? "2.5rem" : "4rem",
+                  color: "secondary.main",
+                  fontWeight: "600",
+                  letterSpacing: "0.3rem",
+                }}
+              >
+                Save the Dates
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: isPortrait ? "1.5rem" : "2rem",
+                  color: "light",
+                  fontWeight: "600",
+                  mt: 1,
+                  mb: 3,
+                  textShadow: `-1px 1px 0 #0D21A1,1px 1px 0 #0D21A1,1px -1px 0 #0D21A1,-1px -1px 0 #0D21A1`,
+                }}
+              >
+                Never forget the big days of your friends, family, colleagues,
+                employees, and even your boss.
+              </Typography>
+              <ListItem
+                content="Save your favorite dates."
+                tooltip="Birthday, Anniversary, etc. save any date that matters."
+              />
+              <ListItem
+                content="Get notified ahead of time."
+                tooltip="Recieve email/SMS/WhatsApp message prior to the big dates."
+              />
+              <ListItem
+                content="Send out wishes to your loved ones."
+                tooltip="Send email/SMS/WhatsApp notification to the significant people."
+              />
+              <ListItem
+                content="Automate personalized wishes."
+                tooltip="Send automated custom messages."
+              />
+              <Button
+                key="login"
+                href="/help"
+                sx={{
+                  my: 2,
+                  mt: 3,
+                  color: "secondary.main",
+                  float: "right",
+                  textAlign: "center",
+                  backgroundColor: "light",
+                  fontWeight: "600",
+                  fontSize: isPortrait ? "1.2rem" : "1.5rem",
+                  padding: "0.5rem 1.5rem",
+                  border: "2px solid #0D21A1",
+                  borderRadius: "3rem",
+                  "&:hover": {
+                    backgroundColor: "secondary.dark",
+                    color: "primary.main",
+                  },
+                }}
+              >
+                Learn More
+                <ArrowCircleRightTwoToneIcon sx={{ ml: 1, fontSize: "2rem" }} />
+              </Button>
+            </Box>
           </Box>
-        </Container>
-      </div>
+        </Box>
+      </Container>
     </React.Fragment>
   );
 };

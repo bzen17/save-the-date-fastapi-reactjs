@@ -2,10 +2,10 @@ import HEADER from "./header";
 import axios from "axios";
 const FormData = require("form-data");
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
+const BASE_URL = process.env[`REACT_APP_${process.env.REACT_APP_ENV.toUpperCase()}_BASE_URL`];
 
 export const login = (data) => {
+
   const url = BASE_URL + "/auth/login";
   const form = new FormData();
   form.append("username", data.username);

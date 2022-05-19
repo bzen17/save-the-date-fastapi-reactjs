@@ -8,17 +8,13 @@ const LayoutwithNavbar = (props) => {
   const { isLoggedIn, isLoading } = ctx;
   return (
     <div
-      className="d-flex flex-column "
-      style={{ minHeight: "100vh", backgroundColor: "#EEC643" }}
+      className="d-flex flex-column layoutWrapper"
+      style={{ backgroundColor: "#EEC643" }}
     >
-      {isLoading ? (
-        <Loader />
-      ) : (
         <>
           <NavBar />
           {props.children}
         </>
-      )}
       <Outlet />
     </div>
   );

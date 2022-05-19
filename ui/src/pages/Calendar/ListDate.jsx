@@ -22,7 +22,13 @@ import {
 } from "../../api/event";
 import { getCurrMonth } from "../../utils/getDateAttr";
 import { useHorizontalScroll } from "../../utils/useHorizontalScroll";
+import { useMediaQuery } from "react-responsive";
+import { useAuth } from "../../redux/store/auth-context";
+import Loader from "../../components/Loader";
+import { useLoader } from "../../redux/store/loader-context";
 const ListDate = () => {
+  const isPortrait = useMediaQuery({ query: "(max-width: 767px)" });
+  const loader = useLoader();
   const scrollRef1 = useHorizontalScroll();
   const scrollRef2 = useHorizontalScroll();
   const [currentDates, setCurrentDates] = useState([]);
@@ -38,24 +44,26 @@ const ListDate = () => {
       const upcoming = await getUpcomingUserEvents(getCurrMonth(), 3).catch(
         (err) => {
           console.log(err);
+          loader.setIsLoading(false);
         }
       );
       setCurrentDates(current.data.data);
       setUpcomingDates(upcoming.data.data);
+      loader.setIsLoading(false);
     };
     fetchData();
   }, []);
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="xl">
+      {loader.isLoading?<Loader/>:<Container maxWidth="false" sx={{ bgcolor: "primary.main" }}>
+      <Container maxWidth="xl" >
         <Box sx={{ bgcolor: "transparent" }}>
           <Typography
             variant="h2"
             sx={{
               color: "secondary.main",
               textAlign: "center",
-              marginTop: "5rem",
             }}
           >
             Upcoming Dates
@@ -65,15 +73,42 @@ const ListDate = () => {
             Current Month
           </Typography>
           <Divider sx={{ mb: 3 }} />
-          <DateCard savedDates={currentDates} scrollRef={scrollRef1} />
+          {currentDates.length > 0 ? (
+            <DateCard savedDates={currentDates} scrollRef={scrollRef1} />
+          ) : (
+            <Typography
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                my: "9.5rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              No saved dates found.
+            </Typography>
+          )}
           <Divider sx={{ mt: 3 }} />
           <Typography variant="h3" sx={{ color: "secondary.dark" }}>
             Upcoming Months
           </Typography>
           <Divider sx={{ mb: 3 }} />
-          <DateCard savedDates={upcomingDates} scrollRef={scrollRef2} />
+          {upcomingDates.length > 0 ? (
+            <DateCard savedDates={upcomingDates} scrollRef={scrollRef2} />
+          ) : (
+            <Typography
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                my: "9.5rem",
+                fontSize: "1.5rem",
+              }}
+            >
+              No saved dates found.
+            </Typography>
+          )}
         </Box>
       </Container>
+      </Container>}
     </React.Fragment>
   );
 };

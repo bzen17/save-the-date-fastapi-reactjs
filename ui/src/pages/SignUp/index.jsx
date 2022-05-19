@@ -14,17 +14,23 @@ import Container from "@mui/material/Container";
 import Copyright from "../../components/Copyright";
 import { signup } from "../../api/auth";
 import Paper from "@mui/material/Paper";
-import Logo from "../../components/Logo";
+import Logo from "../../components/LogoLandscape";
+import SignUpImg from "../../assets/images/signup.jpg";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useLoader } from "../../redux/store/loader-context";
+import ReactLoading from "react-loading";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const loader = useLoader();
+  const navigate = useNavigate()
+  React.useEffect(() => {
+    loader.setIsLoading(false);
+  } ,[])
   const handleSubmit = (event) => {
+    loader.setIsLoading(true);
     event.preventDefault();
     const target = event.currentTarget;
-    console.log({
-      fullname: target.firstName.value + " " + target.lastName.value,
-      email: target.email.value,
-      password: target.password.value,
-    });
     const body = {
       fullname: target.firstName.value + " " + target.lastName.value,
       email: target.email.value,
@@ -32,6 +38,10 @@ export default function SignUp() {
     };
     signup(body).then((res) => {
       console.log(res);
+      navigate('/login')
+    }).catch((err) => {
+      console.log(err);
+      loader.setIsLoading(false);
     });
   };
 
@@ -44,7 +54,7 @@ export default function SignUp() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(https://source.unsplash.com/random)",
+          backgroundImage: `url(${SignUpImg})`,
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -53,11 +63,7 @@ export default function SignUp() {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-      >
-        <div className="d-flex align-items-center">
-          <Logo padding="1rem" />
-        </div>
-      </Grid>
+      ></Grid>
       <Grid
         item
         xs={12}
@@ -78,11 +84,14 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
+          <div className="d-flex align-items-center">
+            <Logo padding="1rem" />
+          </div>
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
+            sx={{ mt: 8 }}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -132,15 +141,18 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2 , fontSize: "1.5rem", letterSpacing: "0.5rem", borderRadius: "3rem"}}
               color="secondary"
+              loading={loader.isLoading}
+              loadingIndicator={<ReactLoading type="balls" height={32} width={32}/>}
+
             >
-              Sign Up
-            </Button>
+              SIGN UP
+            </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2" color="secondary">

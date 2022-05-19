@@ -1,7 +1,7 @@
 import axios from "axios";
 import HEADER from "./header";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env[`REACT_APP_${process.env.REACT_APP_ENV.toUpperCase()}_BASE_URL`];
 
 export const addEvent = (data) => {
   const url = BASE_URL + "/event";
