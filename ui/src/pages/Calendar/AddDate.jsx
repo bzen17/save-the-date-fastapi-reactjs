@@ -19,10 +19,14 @@ import { addEvent } from "../../api/event";
 import { useHorizontalScroll } from "../../utils/useHorizontalScroll";
 import { useLoader } from "../../redux/store/loader-context";
 import Loader from "../../components/Loader";
+import LoadingButton from '@mui/lab/LoadingButton';
+import ReactLoading from "react-loading";
+import { useMediaQuery } from "react-responsive";
 
 const AddDate = () => {
   const classes = useStyles();
   const loader = useLoader();
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [selectedDate, setSelectedDate] = useState({ Day: "", Month: "" });
   const [selectedOccasion, setSelectedOccasion] = useState({
     Name: "",
@@ -138,12 +142,13 @@ const AddDate = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      {loader.isLoading?<Loader/>:<Container maxWidth="false" sx={{ bgcolor: "primary.main" }}>
+      <Container maxWidth="false" sx={{ bgcolor: "primary.main" }}>
         <Container maxWidth="xl">
           <Box sx={{ bgcolor: "transparent" }}>
             <Typography
               variant="h2"
               sx={{
+                fontSize: isMobile?"2.75rem":"3.75rem",
                 color: "secondary.main",
                 textAlign: "center",
               }}
@@ -158,7 +163,7 @@ const AddDate = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="h2" sx={{ color: "secondary.dark" }}>
+              <Typography variant="h2" sx={{ fontSize: isMobile?"2.75rem":"3.75rem",color: "secondary.dark" }}>
                 Date
               </Typography>
               <Stack direction="row" spacing={3}>
@@ -220,7 +225,7 @@ const AddDate = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="h2" sx={{ color: "secondary.dark" }}>
+              <Typography variant="h2" sx={{ fontSize: isMobile?"2.75rem":"3.75rem",color: "secondary.dark" }}>
                 Occasion
               </Typography>
               {selectedOccasion.Name !== "" &&
@@ -271,7 +276,7 @@ const AddDate = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="h2" sx={{ color: "secondary.dark" }}>
+              <Typography variant="h2" sx={{ fontSize: isMobile?"2.75rem":"3.75rem", color: "secondary.dark" }}>
                 Person
               </Typography>
               <Stack direction="row" spacing={3}>
@@ -326,7 +331,7 @@ const AddDate = () => {
                 <Typography
                   variant="h3"
                   mr={6}
-                  sx={{ color: "secondary.main" }}
+                  sx={{ fontSize: isMobile?"2rem":"3rem",color: "secondary.main" }}
                 >
                   Name
                 </Typography>
@@ -347,7 +352,8 @@ const AddDate = () => {
                 />
               </Grid>
             </Grid>
-            <Button
+            <LoadingButton
+              type="submit"
               fullWidth={true}
               onClick={handleSubmitForm}
               sx={{
@@ -365,12 +371,14 @@ const AddDate = () => {
                   color: "primary.main",
                 },
               }}
+              loading={loader.isLoading}
+              loadingIndicator={<ReactLoading type="balls" height={32} width={32}/>}
             >
               Submit
-            </Button>
+            </LoadingButton>
           </Box>
         </Container>
-      </Container>}
+      </Container>
     </React.Fragment>
   );
 };

@@ -43,7 +43,7 @@ const ListItem = (props) => {
       >
         {props.content}
       </Typography>
-      <CustomTooltip title={props.tooltip} placement="top-end">
+      <CustomTooltip title={props.tooltip} placement="top-start">
         <InfoOutlinedIcon
           sx={{ color: "light", ml: "2.5vw", alignSelf: "flex-start" }}
         />

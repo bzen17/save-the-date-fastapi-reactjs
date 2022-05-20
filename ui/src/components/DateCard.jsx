@@ -55,6 +55,7 @@ const DateCard = ({ savedDates, scrollRef }) => {
       className="scrollableContainer"
       direction="row"
       spacing={3}
+      sx={{my:3}}
     >
       {savedDates.map((el, id) => {
         return (

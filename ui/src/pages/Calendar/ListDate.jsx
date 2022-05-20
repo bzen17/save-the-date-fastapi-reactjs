@@ -26,8 +26,9 @@ import { useMediaQuery } from "react-responsive";
 import { useAuth } from "../../redux/store/auth-context";
 import Loader from "../../components/Loader";
 import { useLoader } from "../../redux/store/loader-context";
+
 const ListDate = () => {
-  const isPortrait = useMediaQuery({ query: "(max-width: 767px)" });
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const loader = useLoader();
   const scrollRef1 = useHorizontalScroll();
   const scrollRef2 = useHorizontalScroll();
@@ -62,6 +63,7 @@ const ListDate = () => {
           <Typography
             variant="h2"
             sx={{
+              fontSize: isMobile?"2.75rem":"3.75rem",
               color: "secondary.main",
               textAlign: "center",
             }}
@@ -69,12 +71,12 @@ const ListDate = () => {
             Upcoming Dates
           </Typography>
           <Divider sx={{ mt: 2 }} />
-          <Typography variant="h3" sx={{ color: "secondary.dark" }}>
+          <Typography variant="h3" sx={{ fontSize: isMobile?"2rem":"3rem",color: "secondary.dark" }}>
             Current Month
           </Typography>
           <Divider sx={{ mb: 3 }} />
           {currentDates.length > 0 ? (
-            <DateCard savedDates={currentDates} scrollRef={scrollRef1} />
+            <DateCard savedDates={currentDates} scrollRef={scrollRef1}/>
           ) : (
             <Typography
               sx={{
@@ -88,7 +90,7 @@ const ListDate = () => {
             </Typography>
           )}
           <Divider sx={{ mt: 3 }} />
-          <Typography variant="h3" sx={{ color: "secondary.dark" }}>
+          <Typography variant="h3" sx={{ fontSize: isMobile?"2rem":"3rem",color: "secondary.dark" }}>
             Upcoming Months
           </Typography>
           <Divider sx={{ mb: 3 }} />

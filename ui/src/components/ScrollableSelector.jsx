@@ -10,6 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import useStyles from "../config/muiMakeStyles";
+import { useMediaQuery } from "react-responsive";
 
 const ScrollableSelector = ({
   title,
@@ -19,10 +20,11 @@ const ScrollableSelector = ({
   selected,
 }) => {
   const classes = useStyles();
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   return (
     <Grid container spacing={2} sx={{ mb: 3 }}>
       <Grid item xs={12} sm={12} md={4}>
-        <Typography variant="h3" mr={6} sx={{ color: "secondary.main" }}>
+        <Typography variant="h3" mr={6} sx={{fontSize: isMobile?"2rem":"3rem", color: "secondary.main" }}>
           {title}
         </Typography>
       </Grid>
