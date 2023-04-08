@@ -19,6 +19,7 @@ import { addEvent } from "../../api/event";
 import { useHorizontalScroll } from "../../utils/useHorizontalScroll";
 import { useLoader } from "../../redux/store/loader-context";
 import Loader from "../../components/Loader";
+import Notification from "../../components/Notification";
 import LoadingButton from '@mui/lab/LoadingButton';
 import ReactLoading from "react-loading";
 import { useMediaQuery } from "react-responsive";
@@ -27,6 +28,7 @@ const AddDate = () => {
   const classes = useStyles();
   const loader = useLoader();
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const [notification, setNotification] = useState({})
   const [selectedDate, setSelectedDate] = useState({ Day: "", Month: "" });
   const [selectedOccasion, setSelectedOccasion] = useState({
     Name: "",
@@ -53,6 +55,7 @@ const AddDate = () => {
   ];
   const occasion = ["Birthday", "Anniversary", "Others"];
   const relation = [
+    "Self",
     "Friend",
     "Mother",
     "Father",
@@ -125,6 +128,7 @@ const AddDate = () => {
   };
   useEffect(() => {
     loader.setIsLoading(false);
+    console.log('not',notification,Object.keys(notification).length===0)
   },[]);
   const handleSubmitForm = async () => {
     loader.setIsLoading(true);
@@ -132,10 +136,14 @@ const AddDate = () => {
       const formData = await FormData();
       
       const res = await addEvent(formData).catch((err) => {
-
         loader.setIsLoading(false);
+        setNotification({message: "Something went wrong! Database server might be down.", type: "error"})
       });
+      console.log('addEvent',res)
       loader.setIsLoading(false);
+      setNotification({message: "Event added successfully!", type: "success"})
+    } else {
+      setNotification({message: "Form Data Invalid!", type: "error"})
     }
     loader.setIsLoading(false);
   };
@@ -143,6 +151,7 @@ const AddDate = () => {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="false" sx={{ bgcolor: "primary.main" }}>
+        <Notification notification={notification} setNotification={setNotification}/>
         <Container maxWidth="xl">
           <Box sx={{ bgcolor: "transparent" }}>
             <Typography
@@ -374,7 +383,7 @@ const AddDate = () => {
               loading={loader.isLoading}
               loadingIndicator={<ReactLoading type="balls" height={32} width={32}/>}
             >
-              Submit
+              SAVE
             </LoadingButton>
           </Box>
         </Container>
